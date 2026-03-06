@@ -44,11 +44,11 @@ export default function HomePage() {
     <article className="bg-black w-full overflow-hidden">
 
       {/* ── VERTICAL INFINITE SCROLL SECTIONS ── */}
-      <div className="w-full h-full flex flex-col">
+      <div className="w-full h-full flex flex-col snap-y snap-mandatory">
         {GALLERY_ITEMS.map((item, index) => (
           <section
             key={item.id}
-            className="relative w-full h-[100svh] flex flex-col items-center justify-center overflow-hidden"
+            className="relative w-full h-[100svh] flex flex-col items-center justify-center overflow-hidden snap-start"
           >
             {/* Background Image (Edge-to-Edge) */}
             <div className={`absolute inset-0 w-full h-full transition-opacity duration-[2000ms] ${index === 0 ? "animate-fade-in" : ""}`}>
