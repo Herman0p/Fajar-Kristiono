@@ -6,56 +6,45 @@ import { useState, useEffect, useCallback, useRef } from "react";
 
 const NAV_ITEMS = [
   {
-    label: "WORK", href: "/work",
+    label: "Work", href: "/work",
     subItems: [
-      { label: "PORTRAITS", href: "/work/portraits" },
-      { label: "COMMISSIONS", href: "/work/commissions" },
-      { label: "LALA", href: "/work/lala" },
-      { label: "PEOPLE", href: "/work/people" },
-      { label: "NEWS", href: "/work/news" },
-      { label: "HURACÁN MARÍA", href: "/work/huracan-maria" },
+      { label: "Portraits", href: "/work/portraits" },
+      { label: "Commissions", href: "/work/commissions" },
+      { label: "Lala", href: "/work/lala" },
+      { label: "People", href: "/work/people" },
+      { label: "News", href: "/work/news" },
+      { label: "Huracán María", href: "/work/huracan-maria" },
     ]
   },
   {
-    label: "CAMPAIGNS", href: "/campaigns",
+    label: "Campaigns", href: "/campaigns",
     subItems: [
-      { label: 'ADIDAS "CABO ROJO"', href: "/campaigns/adidas-cabo-rojo" },
-      { label: "ADIDAS X MERCEDES-AMG PETRONAS F1", href: "/campaigns/adidas-mercedes-f1" },
-      { label: "CROCS X YOUNG MIKO", href: "/campaigns/crocs-young-miko" },
-      { label: 'MEDALLA "TU MEDALLA VIENE"', href: "/campaigns/medalla-tu-medalla-viene" },
-      { label: 'MEDALLA "VERANO A LO PERRRE"', href: "/campaigns/medalla-verano-a-lo-perrre" },
-      { label: "FRESH SUMMER 2022", href: "/campaigns/fresh-summer-2022" },
+      { label: 'Adidas "Cabo Rojo"', href: "/campaigns/adidas-cabo-rojo" },
+      { label: "Adidas x Mercedes-AMG F1", href: "/campaigns/adidas-mercedes-f1" },
+      { label: "Crocs x Young Miko", href: "/campaigns/crocs-young-miko" },
+      { label: 'Medalla "Tu Medalla Viene"', href: "/campaigns/medalla-tu-medalla-viene" },
+      { label: 'Medalla "Verano A Lo Perrre"', href: "/campaigns/medalla-verano-a-lo-perrre" },
+      { label: "Fresh Summer 2022", href: "/campaigns/fresh-summer-2022" },
     ]
   },
   {
-    label: "TOURS", href: "/tours",
+    label: "Tours", href: "/tours",
     subItems: [
-      { label: "EUROPE 2024", href: "/tours/europe-2024" },
-      { label: "LATIN AMERICA", href: "/tours/latin-america" },
-      { label: "US EXCLUSIVES", href: "/tours/us-exclusives" },
+      { label: "Europe 2024", href: "/tours/europe-2024" },
+      { label: "Latin America", href: "/tours/latin-america" },
+      { label: "US Exclusives", href: "/tours/us-exclusives" },
     ]
   },
-  { label: "SERIES", href: "/series" },
-  { label: "TEARSHEETS", href: "/tearsheets" },
-  { label: "ABOUT", href: "/about" },
+  { label: "Series", href: "/series" },
+  { label: "Tearsheets", href: "/tearsheets" },
+  { label: "About", href: "/about" },
 ];
 
 export default function Navbar() {
   const pathname = usePathname();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [isScrolled, setIsScrolled] = useState(false);
-
-  // Track which dropdown is currently open (by label). null means none.
   const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
-
   const navRef = useRef<HTMLElement>(null);
-
-  // ── Scroll detection ──
-  useEffect(() => {
-    const handleScroll = () => setIsScrolled(window.scrollY > 40);
-    window.addEventListener("scroll", handleScroll, { passive: true });
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
 
   // ── Lock body scroll when mobile menu is open ──
   useEffect(() => {
@@ -101,10 +90,7 @@ export default function Navbar() {
           alignItems: "center",
           justifyContent: "space-between",
           padding: "0 clamp(1.5rem, 4vw, 4rem)",
-          background: isScrolled ? "rgba(10, 10, 10, 0.85)" : "transparent",
-          backdropFilter: isScrolled ? "blur(20px) saturate(180%)" : "none",
-          WebkitBackdropFilter: isScrolled ? "blur(20px) saturate(180%)" : "none",
-          borderBottom: isScrolled ? "1px solid var(--color-border)" : "1px solid transparent",
+          background: "transparent",
           transition: "all 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94)",
         }}
       >
@@ -112,30 +98,13 @@ export default function Navbar() {
         <Link
           href="/"
           onClick={closeEntireMenu}
-          style={{
-            fontFamily: "var(--font-serif)",
-            fontSize: "clamp(1.1rem, 2vw, 1.4rem)",
-            fontWeight: 400,
-            letterSpacing: "0.12em",
-            color: "var(--color-text)",
-            textDecoration: "none",
-            textTransform: "uppercase",
-            zIndex: 51,
-            transition: "opacity 0.3s ease",
-          }}
+          className="font-serif text-[clamp(1.1rem,2vw,1.4rem)] font-light tracking-[0.12em] text-white uppercase z-[51] hover:opacity-70 transition-opacity duration-300"
         >
           FAJAR KRISTIONO
         </Link>
 
         {/* ── Desktop nav links ── */}
-        <div
-          style={{
-            display: "flex",
-            alignItems: "center",
-            gap: "clamp(1.5rem, 3vw, 2.5rem)",
-          }}
-          className="desktop-nav relative"
-        >
+        <div className="desktop-nav relative flex items-center gap-[clamp(1.5rem,3vw,2.5rem)]">
           {NAV_ITEMS.map((item) => {
             const isRouteActive = pathname.startsWith(item.href);
             const isDropdownOpen = activeDropdown === item.label;
@@ -145,20 +114,19 @@ export default function Navbar() {
                 <div key={item.label} className="relative">
                   <button
                     onClick={(e) => toggleDropdown(e, item.label)}
-                    className={`nav-link flex items-center gap-1 uppercase tracking-[0.1em] text-[0.7rem] hover:text-[var(--color-accent)] transition-colors duration-300 ${isRouteActive || isDropdownOpen ? "text-white" : "text-white/70"
-                      }`}
+                    className={`nav-link flex items-center gap-1 font-sans text-[0.8rem] font-light tracking-[0.05em] lowercase hover:opacity-100 transition-opacity duration-300 ${isRouteActive || isDropdownOpen ? "text-white opacity-100" : "text-white opacity-50"}`}
                   >
                     <span>{item.label}</span>
-                    <span className="text-[0.6rem] mb-[1px]">
+                    <span className="text-[0.6rem] mb-[1px] font-light">
                       {isDropdownOpen || isRouteActive ? "x" : "+"}
                     </span>
                   </button>
 
                   {/* Desktop Dropdown */}
                   <div
-                    className={`absolute top-full left-0 mt-4 bg-black/95 backdrop-blur-md border border-white/10 p-4 min-w-[240px] flex flex-col gap-3 transition-all duration-300 origin-top-left ${isDropdownOpen
-                        ? "opacity-100 scale-100 pointer-events-auto"
-                        : "opacity-0 scale-95 pointer-events-none"
+                    className={`absolute top-full left-0 mt-4 bg-transparent p-4 min-w-[200px] flex flex-col gap-3 transition-all duration-300 origin-top-left ${isDropdownOpen
+                      ? "opacity-100 scale-100 pointer-events-auto"
+                      : "opacity-0 scale-95 pointer-events-none"
                       }`}
                   >
                     {item.subItems.map((subItem) => (
@@ -166,7 +134,7 @@ export default function Navbar() {
                         key={subItem.href}
                         href={subItem.href}
                         onClick={() => setActiveDropdown(null)}
-                        className={`text-[0.65rem] tracking-[0.15em] uppercase hover:text-[var(--color-accent)] transition-colors duration-200 ${pathname === subItem.href ? "text-[var(--color-accent)]" : "text-white/80"
+                        className={`font-sans text-[0.75rem] tracking-[0.05em] font-light lowercase transition-opacity duration-200 hover:opacity-100 drop-shadow-md ${pathname === subItem.href ? "text-white opacity-100" : "text-white opacity-60"
                           }`}
                       >
                         {subItem.label}
@@ -181,8 +149,7 @@ export default function Navbar() {
               <Link
                 key={item.href}
                 href={item.href}
-                className={`nav-link uppercase tracking-[0.1em] text-[0.7rem] hover:text-[var(--color-accent)] transition-colors duration-300 ${pathname === item.href ? "text-white" : "text-white/70"
-                  }`}
+                className={`nav-link font-sans text-[0.8rem] font-light tracking-[0.05em] lowercase hover:opacity-100 transition-opacity duration-300 ${pathname === item.href ? "text-white opacity-100" : "text-white opacity-50"}`}
               >
                 {item.label}
               </Link>
@@ -200,7 +167,7 @@ export default function Navbar() {
             flexDirection: "column",
             justifyContent: "center",
             alignItems: "center",
-            gap: isMenuOpen ? "0px" : "6px",
+            gap: isMenuOpen ? "0px" : "8px",
             width: "36px",
             height: "36px",
             background: "transparent",
@@ -213,10 +180,9 @@ export default function Navbar() {
           <span
             style={{
               display: "block",
-              width: "24px",
-              height: "1.5px",
-              background: "var(--color-text)",
-              borderRadius: "1px",
+              width: "30px",
+              height: "1px",
+              background: "white",
               transition: "all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94)",
               transform: isMenuOpen ? "rotate(45deg) translateY(0)" : "rotate(0) translateY(0)",
               transformOrigin: "center",
@@ -225,10 +191,9 @@ export default function Navbar() {
           <span
             style={{
               display: "block",
-              width: "24px",
-              height: "1.5px",
-              background: "var(--color-text)",
-              borderRadius: "1px",
+              width: "30px",
+              height: "1px",
+              background: "white",
               transition: "all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94)",
               opacity: isMenuOpen ? 0 : 1,
               transform: isMenuOpen ? "scaleX(0)" : "scaleX(1)",
@@ -237,10 +202,9 @@ export default function Navbar() {
           <span
             style={{
               display: "block",
-              width: "24px",
-              height: "1.5px",
-              background: "var(--color-text)",
-              borderRadius: "1px",
+              width: "30px",
+              height: "1px",
+              background: "white",
               transition: "all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94)",
               transform: isMenuOpen ? "rotate(-45deg) translateY(0)" : "rotate(0) translateY(0)",
               transformOrigin: "center",
@@ -250,7 +214,7 @@ export default function Navbar() {
       </nav>
 
       {/* ── MOBILE OVERLAY ── */}
-      <div className={`mobile-menu-overlay ${isMenuOpen ? "open" : ""}`} style={{ overflowY: "auto", paddingTop: "6rem", paddingBottom: "4rem" }}>
+      <div className={`mobile-menu-overlay bg-black ${isMenuOpen ? "open" : ""}`} style={{ overflowY: "auto", paddingTop: "6rem", paddingBottom: "4rem" }}>
         <div className="flex flex-col items-center justify-start w-full min-h-full gap-6">
           {NAV_ITEMS.map((item) => {
             const isRouteActive = pathname.startsWith(item.href);
@@ -261,15 +225,15 @@ export default function Navbar() {
                 <div key={item.label} className="w-full flex flex-col items-center">
                   <button
                     onClick={(e) => toggleDropdown(e, item.label)}
-                    className="flex justify-center items-center gap-2 font-sans text-[clamp(1.2rem,4vw,2rem)] tracking-[0.2em] uppercase font-light text-white transition-all duration-300"
+                    className={`flex justify-center items-center gap-2 font-sans text-[clamp(1.5rem,5vw,2.5rem)] tracking-[0.05em] lowercase font-light transition-opacity duration-300 ${isRouteActive || isDropdownOpen ? "text-white opacity-100" : "text-white opacity-50"}`}
                   >
                     <span>{item.label}</span>
-                    <span className="text-[1rem] font-medium">{isDropdownOpen || isRouteActive ? "x" : "+"}</span>
+                    <span className="text-[1rem] font-light">{isDropdownOpen || isRouteActive ? "x" : "+"}</span>
                   </button>
 
                   {/* Mobile Accordion */}
                   <div
-                    className={`flex flex-col items-center gap-5 overflow-hidden transition-all duration-500 ease-in-out ${isDropdownOpen ? "max-h-[600px] mt-6 opacity-100" : "max-h-0 mt-0 opacity-0"
+                    className={`flex flex-col items-center gap-4 overflow-hidden transition-all duration-500 ease-in-out ${isDropdownOpen ? "max-h-[600px] mt-4 opacity-100" : "max-h-0 mt-0 opacity-0"
                       }`}
                   >
                     {item.subItems.map((subItem) => (
@@ -277,7 +241,7 @@ export default function Navbar() {
                         key={subItem.href}
                         href={subItem.href}
                         onClick={closeEntireMenu}
-                        className={`text-[0.7rem] text-center tracking-[0.15em] uppercase transition-colors duration-200 ${pathname === subItem.href ? "text-[var(--color-accent)]" : "text-white/60 hover:text-white"
+                        className={`font-sans text-[1rem] text-center tracking-[0.05em] lowercase font-light transition-opacity duration-200 ${pathname === subItem.href ? "text-white opacity-100" : "text-white opacity-40 hover:opacity-100"
                           }`}
                       >
                         {subItem.label}
@@ -293,7 +257,7 @@ export default function Navbar() {
                 key={item.href}
                 href={item.href}
                 onClick={closeEntireMenu}
-                className={`font-sans text-[clamp(1.2rem,4vw,2rem)] tracking-[0.2em] uppercase font-light transition-all duration-300 ${pathname === item.href ? "text-[var(--color-accent)]" : "text-white hover:text-white/80"
+                className={`font-sans text-[clamp(1.5rem,5vw,2.5rem)] tracking-[0.05em] lowercase font-light transition-opacity duration-300 ${pathname === item.href ? "text-white opacity-100" : "text-white opacity-50 hover:opacity-100"
                   }`}
               >
                 {item.label}
@@ -302,9 +266,6 @@ export default function Navbar() {
           })}
         </div>
       </div>
-
-      {/* ── Spacer for fixed navbar ── */}
-      <div style={{ height: "var(--nav-height)" }} />
 
       {/* ── Responsive media queries via style tag ── */}
       <style jsx global>{`
