@@ -1,6 +1,16 @@
+"use client";
+
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 
 export default function Footer() {
+    const pathname = usePathname();
+
+    // Hide footer on home page for infinite scroll experience
+    if (pathname === "/") {
+        return null;
+    }
+
     return (
         <footer className="w-full bg-black text-white mt-10 pt-[clamp(4rem,8vw,8rem)] pb-[clamp(3rem,6vw,5rem)] px-[clamp(1.5rem,4vw,4rem)]">
             <div className="max-w-[1400px] mx-auto">
